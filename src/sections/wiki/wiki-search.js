@@ -3,6 +3,7 @@ import { useWikiSearch, actionTypes } from 'src/contexts/wiki-search-context';
 import axios from 'axios';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { Card, InputAdornment, OutlinedInput, SvgIcon } from '@mui/material';
+import config from 'src/config/config';
 import _debounce from 'lodash/debounce';
 
 const WikiSearch = () => {
@@ -12,7 +13,7 @@ const WikiSearch = () => {
   const handleSearch = useCallback(
     _debounce(async (query) => {
       try {
-        const response = await axios.get(`http://localhost:8081/user/wiki-search/${query}`);
+        const response = await axios.get(`${config.apiBaseUrl}/user/wiki-search/${query}`);
         const searchResults = response.data.query.search.map((result) => ({
           id: result.pageid,
           createdAt: result.timestamp,
@@ -25,7 +26,7 @@ const WikiSearch = () => {
       } catch (error) {
         console.error('Error in WikiSearch:', error);
       }
-    }, 2000),
+    }, 500),
     [dispatch]
   );
 
